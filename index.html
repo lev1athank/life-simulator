@@ -8,7 +8,25 @@
     <title>Neural network</title>
 </head>
 <body>
-    <canvas class="conv" width="300" height="300"></canvas>
+    <div>
+        <canvas class="conv" width="300" height="300"></canvas>
+        <div class="life">
+            прошло жизней: 0
+        </div>
+    </div>
+    </div>
+    <div class="tool">
+        <div class="btns">
+            <button onclick="start_or_stop(this)">старт</button>
+            <button onclick="clearConvas()">очистить</button>
+        </div>
+        <div class="speed">
+            <input type="range" min="1" max="5" value="1" oninput="setSpeed(this.value)">
+            <div>Скорость:</div>
+            <div class="sp">1</div>
+        </div>
+
+    </div>
     <script src="./script.js"></script>
 </body>
 </html>

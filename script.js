@@ -1,39 +1,25 @@
 const conves = document.querySelector('.conv')
 
 const ctx = conves.getContext('2d', { willReadFrequently: true })
+ctx.lineWidth = 1
 
-const pix = 10
+const width = 700
+const height = 700
+const pix = 60
 
+conves.width = width-width%pix
+conves.height = height-height%pix
+console.log(conves.width, conves.height);
 
-ctx.lineWidth = 2
-// for (let x = pix; x < conves.width; x+=pix) {
-//     ctx.moveTo(x, 0)
-//     ctx.lineTo(x, conves.height)
-//     ctx.moveTo(0, x)
-//     ctx.lineTo(conves.width, x)
-// }
-
-
-const draw = (x, y)=> ctx.fillRect(x, y, pix, pix)
+let basePix = []
 
 
+const draw = (x, y)=> {
+    ctx.beginPath();
+    ctx.fillRect(x, y, pix, pix)
+    ctx.stroke();
+}
 
-draw(160, 160)
-draw(170, 160)
-draw(170, 150)
-draw(180, 160)
-
-draw(100, 100)
-draw(110, 100)
-draw(120, 100)
-
-
-draw(220, 160)
-draw(230, 160)
-draw(240, 160)
-draw(230, 150)
-
-ctx.stroke();
 
 let revive = []
 let kill = []
@@ -52,13 +38,13 @@ function dead_AND_life() {
 
 
 function check(x, y) {
-
+    
     data = ctx.getImageData(x-pix, y-pix, pix*3, pix*3)
     //ctx.strokeRect(x-pix, y-pix, pix*3, pix*3); //del
-    let near = data.data.filter(el=>el == 255).length / 100
-
+    let near = data.data.filter(el=>el == 255).length / (pix*pix)
     
-    if(ctx.getImageData(x+pix/2, y+pix/2, pix/2, pix/2).data.filter(el=>el == 255).length) {
+    console.log(near);
+    if(ctx.getImageData(x+pix/2, y+pix/2, pix/2, pix/2).data.filter(el=>el > 0).length) {
         near-=1
         if(near <= 1 || near > 3) kill.push([x,y])
     }else{
@@ -66,17 +52,115 @@ function check(x, y) {
     }
 }
 
-const Start = setInterval(()=>{
-    const w = conves.width
-    const h = conves.height
-    for (let x = 0; x < w; x+=pix) {
-        for (let y = 0; y < h; y+=pix) {
-            check(x, y)
-        }
+
+let startInter  
+let Islife = false
+
+function creatPix(x, y) {
+    if (!Islife) {
+        basePix.push(x,y)
+        draw(x,y)
     }
-    dead_AND_life()
+}
+
+function clearConv() {
+    ctx.clearRect(0,0,width,height)
+    life = 0
+    renderLifeText()
+    basePix.forEach(([x,y])=>draw(x,y))
+}
+
+
+
+
+
+function drawСells() {
+    ctx.beginPath();
+    ctx.lineWidth = 1
+    ctx.strokeStyle = 'gray'
+    for (let x = pix; x < width; x+=pix) {
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x, conves.height)
+        ctx.moveTo(0, x)
+        ctx.lineTo(conves.width, x)
+    }
+    ctx.stroke();
+}
+
+function clearConvas() {
+    ctx.clearRect(0,0,width,height)
+    drawСells()
+    basePix = []
+    life = 0
+    renderLifeText()
+    clearInterval(startInter)
+}
+
+
+let speed = 1
+
+const speedText = document.querySelector('.sp')
+const setSpeed = sp=> {
+    speed = sp
+    speedText.innerText = sp
+    if(life) {
+        clearInterval(startInter)
+        startLife()
+    }
     
-}, 300)
+}
 
 
+let life = 0
+
+const lifeText = document.querySelector('.life')
+
+const renderLifeText = ()=>lifeText.innerText = 'прошло жизней:' + life
+
+function startLife() {
+    
+    startInter = setInterval(()=>{
+        for (let x = 0; x < width; x+=pix) {
+            for (let y = 0; y < height; y+=pix) {
+                check(x, y)
+            }
+        }
+        console.log(kill);
+        console.log(revive);
+        dead_AND_life()
+        life++
+        renderLifeText()
+        
+    }, 1000 / speed)
+    
+}
+
+function stopLife() {
+    clearInterval(startInter)
+    clearConv()
+    drawСells()
+    
+}
+
+function start_or_stop(params) {
+    if(params.innerText=='старт'){
+        params.innerText = "стоп"
+        clearConv()
+        startLife()
+    }
+    else{
+        params.innerText = 'старт'
+        stopLife()
+    }
+}
+
+conves.addEventListener('click', (el)=>{
+    let x = Math.floor(el.offsetX/pix) * pix
+    let y = Math.floor(el.offsetY/pix) * pix
+
+    basePix.push([x, y])
+    draw(x, y)
+})
+
+drawСells()
 // document.addEventListener('keypress', ()=>Start())
