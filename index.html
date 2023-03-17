@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Neural network</title>
-</head>
+</head> 
 <body>
     <div>
-        <canvas class="conv" width="300" height="300"></canvas>
+        <canvas class="conv"></canvas>
         <div class="life">
             прошло жизней: 0
         </div>
     </div>
-    </div>
-    <div class="tool">
-        <div class="btns">
-            <button onclick="start_or_stop(this)">старт</button>
-            <button onclick="clearConvas()">очистить</button>
+    <div class="setting">
+    <div class="tool config">
+        <div class="titleContent">
+            <button class="start_or_stop">старт</button>
+            <button onclick="data_cleaning()">очистить</button>
         </div>
         <div class="speed">
             <input type="range" min="1" max="5" value="1" oninput="setSpeed(this.value)">
@@ -26,6 +26,22 @@
             <div class="sp">1</div>
         </div>
 
+    </div>
+    <div class="tool setting">
+        <div class="titleContent">
+            <span>Настройка поля</span>
+        </div>
+        <div class="WH">ширина 
+            <input type="number" value="300"> <div class="change"> <button>+</button> <button>-</button></div>
+        </div>
+        <div class="WH">высота
+            <input type="number" value="300"> <div class="change"> <button>+</button> <button>-</button></div>
+        </div>
+        <div class="WH">размер пикселя
+            <input type="number" value="10"> 
+        </div>
+
+    </div>
     </div>
     <script src="./script.js"></script>
 </body>

@@ -3,12 +3,37 @@ const conves = document.querySelector('.conv')
 const ctx = conves.getContext('2d', { willReadFrequently: true })
 ctx.lineWidth = 1
 
-const width = 700
-const height = 700
-const pix = 60
+let width
+let height
+let pix
 
-conves.width = width-width%pix
-conves.height = height-height%pix
+
+function drawCells() {
+    ctx.beginPath();
+    ctx.lineWidth = 1
+    ctx.strokeStyle = 'gray'
+    for (let x = pix; x < width; x+=pix) {
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x, height)
+        ctx.moveTo(0, x)
+        ctx.lineTo(width, x)
+    }
+    ctx.stroke();
+}
+
+
+const [w_I, h_I, p_I] = document.querySelectorAll('input[type="number"]')
+function setSetting() {
+    conves.width = w_I.value-w_I.value%p_I.value
+    conves.height = h_I.value-h_I.value%p_I.value
+    width = conves.width 
+    height = conves.height
+    pix = Number(p_I.value)
+    drawCells()
+}
+
+[w_I, h_I, p_I].forEach(el=>el.addEventListener('change', ()=>setSetting()))
+
 console.log(conves.width, conves.height);
 
 let basePix = []
@@ -74,27 +99,9 @@ function clearConv() {
 
 
 
-function drawСells() {
-    ctx.beginPath();
-    ctx.lineWidth = 1
-    ctx.strokeStyle = 'gray'
-    for (let x = pix; x < width; x+=pix) {
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, conves.height)
-        ctx.moveTo(0, x)
-        ctx.lineTo(conves.width, x)
-    }
-    ctx.stroke();
-}
 
-function clearConvas() {
-    ctx.clearRect(0,0,width,height)
-    drawСells()
-    basePix = []
-    life = 0
-    renderLifeText()
-    clearInterval(startInter)
-}
+
+
 
 
 let speed = 1
@@ -138,20 +145,31 @@ function startLife() {
 function stopLife() {
     clearInterval(startInter)
     clearConv()
-    drawСells()
+    drawCells()
     
 }
-
-function start_or_stop(params) {
-    if(params.innerText=='старт'){
-        params.innerText = "стоп"
+const startANDstop_Btn = document.querySelector('.start_or_stop')
+function start_or_stop() {
+    if(startANDstop_Btn.innerText=='старт'){
+        startANDstop_Btn.innerText = "стоп"
         clearConv()
         startLife()
     }
     else{
-        params.innerText = 'старт'
+        startANDstop_Btn.innerText = 'старт'
         stopLife()
     }
+}
+startANDstop_Btn.onclick = start_or_stop
+
+function clearConvas() {
+    ctx.clearRect(0,0,width,height)
+    drawCells()
+    basePix = []
+    life = 0
+    renderLifeText()
+    clearInterval(startInter)
+    startANDstop_Btn.innerText = 'старт'
 }
 
 conves.addEventListener('click', (el)=>{
@@ -162,5 +180,7 @@ conves.addEventListener('click', (el)=>{
     draw(x, y)
 })
 
-drawСells()
+
+setSetting(300, 300, 20)
+drawCells()
 // document.addEventListener('keypress', ()=>Start())
