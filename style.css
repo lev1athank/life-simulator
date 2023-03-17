@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -19,6 +20,7 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
 .conv {
     background-color: white;
 }
@@ -36,12 +38,12 @@ body {
     height: 300px;
 }
 
-.tool>*{
+.tool>* {
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    
+
 
 }
 
@@ -51,15 +53,15 @@ body {
     border-top-right-radius: inherit;
     border-top-left-radius: inherit;
     background-color: #444444;
-    width: 97%;
+    width: 100%;
     height: 40%;
     box-shadow: 0px 36px 38px -6px rgba(67, 67, 67, 0.28);
 }
 
 .titleContent button {
-
+    color: #FFDD83;
     font-size: 18px;
-    background-color: white;
+    background-color: #222;
     border-radius: 5px;
     border: none;
     width: 80%;
@@ -73,6 +75,7 @@ body {
     font-size: 16px;
 
 }
+
 .speed .sp {
     color: white;
     font-size: 45px;
@@ -107,6 +110,7 @@ body {
 .WH input:focus {
     outline: none;
 }
+
 .WH input:active {
     outline: none;
     appearance: none
@@ -116,13 +120,29 @@ body {
     appearance: none
 }
 
+.setting {
+    color: #FFDD83;
+}
 
-.tool.setting > .titleContent {
+
+.tool.setting>.titleContent {
     height: 60px;
 }
 
-.change button{
+.change button {
     color: white;
     background-color: #222;
     border: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+input[type='range'] {
+    cursor: grab;
+}
+
+input[type='range']:active {
+    cursor: grabbing;
 }

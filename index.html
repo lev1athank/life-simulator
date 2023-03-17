@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Neural network</title>
-</head> 
+</head>
+
 <body>
     <div>
         <canvas class="conv"></canvas>
@@ -15,34 +17,38 @@
         </div>
     </div>
     <div class="setting">
-    <div class="tool config">
-        <div class="titleContent">
-            <button class="start_or_stop">старт</button>
-            <button onclick="data_cleaning()">очистить</button>
-        </div>
-        <div class="speed">
-            <input type="range" min="1" max="5" value="1" oninput="setSpeed(this.value)">
-            <div>Скорость:</div>
-            <div class="sp">1</div>
-        </div>
+        <div class="tool config">
+            <div class="titleContent">
+                <button class="start_or_stop">старт</button>
+                <button onclick="restart()">очистить</button>
+            </div>
+            <div class="speed">
+                <input type="range" min="1" max="10" value="1" oninput="setSpeed(this.value)">
+                <div>Скорость:</div>
+                <div class="sp">1</div>
+            </div>
 
-    </div>
-    <div class="tool setting">
-        <div class="titleContent">
-            <span>Настройка поля</span>
         </div>
-        <div class="WH">ширина 
-            <input type="number" value="300"> <div class="change"> <button>+</button> <button>-</button></div>
-        </div>
-        <div class="WH">высота
-            <input type="number" value="300"> <div class="change"> <button>+</button> <button>-</button></div>
-        </div>
-        <div class="WH">размер пикселя
-            <input type="number" value="10"> 
-        </div>
+        <div class="tool setting">
+            <div class="titleContent">
+                <span>Настройка поля</span>
+            </div>
+            <div class="WH config-width">ширина
+                <input type="number" value="300">
+                <div class="change"> <button id="config-minus">-</button> <button id="config-plus">+</button></div>
+            </div>
+            <div class="WH config-height">высота
+                <input type="number" value="300">
+                <div class="change"> <button id="config-minus">-</button> <button id="config-plus">+</button></div>
+            </div>
+            <div class="WH config-pix">размер пикселя
+                <input type="number" value="10">
+                <div class="change"> <button id="config-minus">-</button> <button id="config-plus">+</button></div>
+            </div>
 
-    </div>
+        </div>
     </div>
     <script src="./script.js"></script>
 </body>
+
 </html>
