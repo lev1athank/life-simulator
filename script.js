@@ -2,6 +2,10 @@ const conves = document.querySelector('.conv')
 document.addEventListener('contextmenu', event => event.preventDefault());
 const ctx = conves.getContext('2d', { willReadFrequently: true })
 
+const [birth, survival] = document.querySelectorAll('.settingGame input') //body > div.setting > div.tool.settingGame > div.WH.config-size > input[type=number]
+
+console.log(birth.value.split(''),survival.value.split(''));
+
 let width
 let height
 let pix
@@ -72,9 +76,9 @@ function check(x, y) {
 
     if (ctx.getImageData(x + pix / 2, y + pix / 2, pix / 2, pix / 2).data.filter(el => el > 0).length) {
         near -= 1
-        if ([].indexOf(near) == -1) kill.push([x, y])
+        if (survival.value.split('').indexOf(near.toString()) == -1) kill.push([x, y])
     } else {
-        if ([2,3,4].indexOf(near) >=0) revive.push([x, y])
+        if (birth.value.split('').indexOf(near.toString()) >= 0) revive.push([x, y])
     }
 }
 
@@ -214,17 +218,15 @@ conves.addEventListener('mouseup', () => {
 
 setSetting()
 
-let btnsPlus = document.querySelectorAll('#config-plus')
-let btnsMinus = document.querySelectorAll('#config-minus')
-let inpts = document.querySelectorAll('.tool.config > .WH > input')
-console.log(inpts);
+const btnsPlus = document.querySelectorAll('#config-plus')
+const btnsMinus = document.querySelectorAll('#config-minus')
+const inpts = document.querySelectorAll('.tool.config > .WH > input')
 
 for (let i = 0; i < 3; i++) {
     btnsPlus[i].onclick = function () { inpts[i].value = (Number(inpts[i].value) + (i == 2 ? 10 : pix)); setSetting() }
 
     btnsMinus[i].onclick = function () { inpts[i].value = (Number(inpts[i].value) - (i == 2 ? 10 : pix)); setSetting() }
 }
-
 
 
 
