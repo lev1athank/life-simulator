@@ -72,9 +72,9 @@ function check(x, y) {
 
     if (ctx.getImageData(x + pix / 2, y + pix / 2, pix / 2, pix / 2).data.filter(el => el > 0).length) {
         near -= 1
-        if (near <= 1 || near > 3) kill.push([x, y])
+        if ([].indexOf(near) == -1) kill.push([x, y])
     } else {
-        if (near == 3) revive.push([x, y])
+        if ([2,3,4].indexOf(near) >=0) revive.push([x, y])
     }
 }
 
@@ -208,7 +208,7 @@ conves.addEventListener('mousemove', (el) => {
     }
 })
 
-conves.addEventListener('mouseup', (el) => {
+conves.addEventListener('mouseup', () => {
     IsMove = false
 })
 
@@ -216,7 +216,8 @@ setSetting()
 
 let btnsPlus = document.querySelectorAll('#config-plus')
 let btnsMinus = document.querySelectorAll('#config-minus')
-let inpts = document.querySelectorAll('.WH > input')
+let inpts = document.querySelectorAll('.tool.config > .WH > input')
+console.log(inpts);
 
 for (let i = 0; i < 3; i++) {
     btnsPlus[i].onclick = function () { inpts[i].value = (Number(inpts[i].value) + (i == 2 ? 10 : pix)); setSetting() }
