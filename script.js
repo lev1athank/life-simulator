@@ -194,6 +194,7 @@ let IsMove = false
 
 
 conves.addEventListener('mousedown', (el) => {
+    if(life > 0) return
     if (el.which == 1) {
         createPix(el)
     } else {

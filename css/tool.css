@@ -11,6 +11,7 @@
     height: 300px;
 }
 
+
 .tool>* {
     display: flex;
     justify-content: space-around;
@@ -117,4 +118,17 @@ input[type='range']:active {
 
 .settingGame {
     justify-content: normal;
+}
+
+@media (max-width: 768px) {
+    .tool {
+        width: 33%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .setting {
+        position: relative;
+    }
 }
