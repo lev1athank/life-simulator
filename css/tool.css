@@ -97,6 +97,11 @@
 }
 
 
+.config-color {
+    width: 80%;
+    height: 40%;
+}
+
 
 .change button {
     color: white;

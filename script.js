@@ -4,17 +4,22 @@ const ctx = conves.getContext('2d', { willReadFrequently: true })
 
 const [birth, survival] = document.querySelectorAll('.settingGame input') //body > div.setting > div.tool.settingGame > div.WH.config-size > input[type=number]
 
-console.log(birth.value.split(''),survival.value.split(''));
+console.log(birth.value.split(''), survival.value.split(''));
 
 let width
 let height
 let pix
 
+let colorBack = [255, 255, 255, 255]
+let colorPix = [0, 0, 0, 255]
+let colorCell = [50, 50, 50, 255]
+
 
 function drawCells() {
     ctx.beginPath();
     ctx.lineWidth = 1
-    ctx.strokeStyle = 'gray'
+    console.log(`rgb(${colorCell[0]},${colorCell[1]},${colorCell[2]})`);
+    ctx.strokeStyle = `rgb(${colorCell[0]},${colorCell[1]},${colorCell[2]})`
     for (let x = pix; x < width; x += pix) {
         ctx.moveTo(x, 0)
         ctx.lineTo(x, height)
@@ -29,24 +34,41 @@ function drawCells() {
 
 let basePix = []
 
+const hexToR = (h) => parseInt((cutHex(h)).substring(0, 2), 16)
+const hexToG = (h) => parseInt((cutHex(h)).substring(2, 4), 16)
+const hexToB = (h) => parseInt((cutHex(h)).substring(4, 6), 16)
+const cutHex = (h) => (h.charAt(0) == "#") ? h.substring(1, 7) : h
+
+const RgbSplit = (rgb) => {
+    return [hexToR(rgb), hexToG(rgb), hexToB(rgb), 255]
+}
+
 const [w_I, h_I, p_I] = document.querySelectorAll('input[type="number"]')
+const [Cb, Cp, Cc] = document.querySelectorAll('input[type="color"]')
+console.log(Cb, w_I);
 function setSetting() {
+    stopLife()
+    console.log(RgbSplit(Cc.value));
     conves.width = w_I.value - w_I.value % p_I.value
     conves.height = h_I.value - h_I.value % p_I.value
     width = conves.width
     height = conves.height
     pix = Number(p_I.value)
+    colorBack = conves.style.backgroundColor = Cb.value
+    colorPix = RgbSplit(Cp.value)
+    colorCell = RgbSplit(Cc.value)
     basePix = []
     drawCells()
 }
 
-[w_I, h_I, p_I].forEach(el => el.addEventListener('change', () => setSetting()))
+[w_I, h_I, p_I, Cb, Cp, Cc].forEach(el => el.addEventListener('change', setSetting))
 
 
 
 
 const draw = (x, y) => {
     ctx.beginPath();
+    ctx.fillStyle = `rgb(${colorPix[0]},${colorPix[1]},${colorPix[2]})`
     ctx.fillRect(x, y, pix, pix)
     ctx.stroke();
 }
@@ -72,8 +94,14 @@ function check(x, y) {
 
     data = ctx.getImageData(x - pix, y - pix, pix * 3, pix * 3)
     //ctx.strokeRect(x-pix, y-pix, pix*3, pix*3); //del
-    let near = data.data.filter(el => el == 255).length / (pix * pix)
-
+    // let near = data.data.filter(el => el == 255).length / (pix * pix)
+    let near = 0
+    let dataPix = data.data
+    for (let pos = 0; pos < dataPix.length; pos += 4) {
+        if (dataPix[pos] == colorPix[0] && dataPix[pos + 1] == colorPix[1] && dataPix[pos + 2] == colorPix[2])
+            near++
+    }
+    near /= 100
     if (ctx.getImageData(x + pix / 2, y + pix / 2, pix / 2, pix / 2).data.filter(el => el > 0).length) {
         near -= 1
         if (survival.value.split('').indexOf(near.toString()) == -1) kill.push([x, y])
@@ -136,6 +164,7 @@ const lifeText = document.querySelector('.life')
 const renderLifeText = () => lifeText.innerText = 'прошло жизней:' + life
 
 function startLife() {
+    startANDstop_Btn.innerText = "стоп"
 
     startInter = setInterval(() => {
         for (let x = 0; x < width; x += pix) {
@@ -152,6 +181,7 @@ function startLife() {
 }
 
 function stopLife() {
+    startANDstop_Btn.innerText = 'старт'
     clearConvas()
     drawCells()
 
@@ -160,12 +190,10 @@ function stopLife() {
 const startANDstop_Btn = document.querySelector('.start_or_stop')
 function start_or_stop() {
     if (startANDstop_Btn.innerText == 'старт') {
-        startANDstop_Btn.innerText = "стоп"
         clearConvas()
         startLife()
     }
     else {
-        startANDstop_Btn.innerText = 'старт'
         stopLife()
     }
 }
@@ -194,7 +222,7 @@ let IsMove = false
 
 
 conves.addEventListener('mousedown', (el) => {
-    if(life > 0) return
+    if (life > 0) return
     if (el.which == 1) {
         createPix(el)
     } else {
